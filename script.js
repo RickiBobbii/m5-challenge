@@ -23,19 +23,11 @@ var today = dayjs();
 var currentTime = today.format('dddd, MMMM D, YYYY h:mm A');
 
 function updateTime(){
-    currentTime = dayjs().format('dddd, MMMM D, YYYY h:mm A');
-    $('#currentDay').text(currentTime);
+  currentTime = dayjs().format('dddd, MMMM D, YYYY h:mm A');
+  $('#currentDay').text(currentTime);
 }
 setInterval(updateTime, 1000);
 updateTime();
-
-// var container = document.querySelector('.container-lg');
-// var divHour = document.querySelector('#hour-11');
-// for (var i = 0; i <= 9; i++) {
-//   var cloneDiv = divHour.cloneNode(true);
-//   cloneDiv.id = 'hour-' = i;
-//   container.appendChild(cloneDiv);
-// }
 
 // Container element for 9a-5p divs
 var container = document.querySelector('.container-lg');
@@ -45,24 +37,31 @@ for (i = 0; i < 9; i++) {
   // row for div
   var row = document.createElement('div');
   row.classList.add('row');
-
+  //id for all rows
+  row.id = "row-" + (i + 1);
+  
   // Time block column
   var timeBlock = document.createElement('div');
+  //timeBlock add classes
   timeBlock.classList.add('col-2', 'col-md-1', 'hour', 'text-center', 'py-3');
-    if (i >= 0 && i <=2) {
-      timeBlock.textContent = i + 9 + ' AM';
-    }else if (i >3 && i <= 12){
-      timeBlock.textContent = i - 3 + ' PM';
-    }else if (i == 3){
-      timeBlock.textContent = i + 9 + ' PM';
-    };
-
+  timeBlock.textContent = dayjs().hour(i + 9).format('H');
   // Textarea column
   var textArea = document.createElement('textarea');
-  textArea.classList.add('col-8', 'col-md-10', 'description', 'future');
-  //TODOS add conditional for past, present, future
+  textArea.classList.add('col-8', 'col-md-10', 'description');
   textArea.rows = 3;
-
+  //TODOS add conditional for past, present, future
+  var currentHour = dayjs().format('H');
+  //used parseInt to properly compare variables
+  if (parseInt(timeBlock.textContent) < parseInt(currentHour)) {
+      textArea.classList.add('past');
+    }else if(parseInt(timeBlock.textContent) === parseInt(currentHour)) {
+      textArea.classList.add('present');
+    }else{
+      textArea.classList.add('future');
+    };
+  console.log('currentHour ' + currentHour, 'timeBlock ' + timeBlock.textContent);
+  //convert timeblock back to am/pm format
+  timeBlock.textContent = dayjs().hour(i +9).format('h A');
   // Button column
   var saveBtn = document.createElement('button');
   saveBtn.classList.add('btn', 'saveBtn', 'col-2', 'col-md-1');
@@ -82,8 +81,8 @@ for (i = 0; i < 9; i++) {
   container.appendChild(row);
 }
 
-document.body.appendChild(container);
 
+//Below is example div block from index.html
 //<div id="hour-9" class="row time-block past">
 /* <div class="col-2 col-md-1 hour text-center py-3">9AM</div>
 <textarea class="col-8 col-md-10 description" rows="3"> </textarea>
