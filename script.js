@@ -1,30 +1,3 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
-//$(function () {
-
-// TODO: Add a listener for click events on the save button. This code should
-// use the id in the containing time-block as a key to save the user input in
-// local storage. HINT: What does `this` reference in the click listener
-// function? How can DOM traversal be used to get the "hour-x" id of the
-// time-block containing the button that was clicked? How might the id be
-// useful when saving the description in local storage?
-//
-// TODO: Add code to apply the past, present, or future class to each time
-// block by comparing the id to the current hour. HINTS: How can the id
-// attribute of each time-block be used to conditionally add or remove the
-// past, present, and future classes? How can Day.js be used to get the
-// current hour in 24-hour time?
-
-// TODO: Add code to get any user input that was saved in localStorage and set
-// the values of the corresponding textarea elements. HINT: How can the id
-// attribute of each time-block be used to do this?
-//
-// TODO: Add code to display the current date in the header of the page.
-//});
-
-
-
 $(document).ready(function() {
 
 //function to display day and time on top of page
@@ -40,6 +13,7 @@ updateTime();
 
 // Container element for 9a-5p divs
 var container = document.querySelector('.container-lg');
+//variable that gets local storage
 var data = JSON.parse(localStorage.getItem('userData') || '{}');
 
 // Create 9 identical divs
@@ -99,14 +73,13 @@ for (i = 0; i < 9; i++) {
   row.appendChild(timeBlock);
   row.appendChild(textArea);
   row.appendChild(saveBtn);
-
   container.appendChild(row);
+  
   //Call function to store and display user data with local storage  
   storeData(row.id, textArea, saveBtn, data);
-  
 };
 
- //functions and submit event for local storage
+ //functions and submit event for setting local storage
  function storeData(rowId, textArea, btn, myData) {
   btn.addEventListener('click', function(event){
     event.preventDefault();
@@ -114,6 +87,7 @@ for (i = 0; i < 9; i++) {
     console.log('Row id is ', rowId);
     console.log('Text area value: ', value);
     myData[rowId] = value;
+    console.log('mydatarowid- ' + myData[rowId]);
     localStorage.setItem('userData', JSON.stringify(data));
   });
  }
